@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.activenav {
+  border-bottom: 5px solid #06021D;
+}
+
+.heroSection {
+  height: 38rem;
+}
+
+.heroSection button {
+  box-shadow: 5px 5px 20px #06021D;
+}
+
+.carousal::-webkit-scrollbar {
+  display: block !important;
+  z-index: 100;
+}
+
+.Section {
+  min-height: 70vh;
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    height: 24rem;
+  }
+
+  .logoTextHero {
+    font-size: .7rem;
+  }
+
+  .HeroLogoImg {
+    width: 30px;
+    height: 30px;
+  }
+}
