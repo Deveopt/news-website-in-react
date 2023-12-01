@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import Spinner from '../Components/Spinner';
 import { FetchAPI } from '../utils/FetchAPI';
 
-
 const Category = () => {
 
     const { category } = useParams();
@@ -14,37 +13,31 @@ const Category = () => {
     const [pageSize, setpageSize] = useState(1);
     const [error, seterror] = useState(null);
     const [Data, setData] = useState(null);
+    const [errorMessage, seterrorMessage] = useState("");
 
     function fetchInitialData() {
-        setLoading(true);
         FetchAPI(`/everything?q=${category}&sortBy=${sort}&pageSize=30&page=${pageSize}&`)
             .then((data) => {
                 setData(data);
-                setLoading(false);
                 setpageSize((prev) => prev + 1)
             })
             .catch((err) => {
-                setLoading(false);
                 seterror(err);
                 console.log(err);
             });
     }
 
     function fetchNextPageData() {
-        setLoading(true);
         FetchAPI(`/everything?q=${category}&sortBy=${sort}&pageSize=30&page=${pageSize}&`)
             .then((res) => {
                 if (res?.articles) {
                     setData({ ...Data, articles: [...Data.articles, ...res.articles] });
-                    setLoading(false);
                 } else {
-                    setData(res)
-                    setLoading(false);
+                    seterrorMessage("Can't load more Data.")
                 }
                 setpageSize((prev) => prev + 1)
             })
             .catch((err) => {
-                setLoading(false);
                 seterror(err);
             });
     }
@@ -69,23 +62,26 @@ const Category = () => {
             </div>
             {Loading && <Spinner initial={true} />}
             {
-                !Loading && <InfiniteScroll
-                    hasMore={() => pageSize <= Math(Data?.totalResults / 30)}
-                    next={() => fetchNextPageData()}
-                    className='content'
-                    dataLength={Data?.articles?.length || []}
-                    loader={<Spinner />}
-                >
-                    <div className="cards h-full w-full flex gap-1 my-6 flex-wrap justify-center">
-                        {
-                            Data?.articles?.map((i, idx) => (
-                                <a href={i.url}>
-                                    <Card key={idx} Loading={Loading} title={i.title} src={i.urlToImage} />
-                                </a>
-                            ))
-                        }
-                    </div>
-                </InfiniteScroll>
+                !Loading &&
+                (
+                    <InfiniteScroll
+                        hasMore={() => pageSize <= Math(Data?.totalResults / 30)}
+                        next={() => fetchNextPageData()}
+                        className='content'
+                        dataLength={Data?.articles?.length || []}
+                        loader={errorMessage !== "" ? <p className='text-center'>{errorMessage}</p> : <Spinner />}
+                    >
+                        <div className="cards h-full w-full flex gap-1 my-6 flex-wrap justify-center">
+                            {
+                                Data?.articles?.map((i, idx) => (
+                                    <a href={i.url}>
+                                        <Card key={idx} Loading={Loading} title={i.title} src={i.urlToImage} />
+                                    </a>
+                                ))
+                            }
+                        </div>
+                    </InfiniteScroll>
+                )
             }
         </div>
     )

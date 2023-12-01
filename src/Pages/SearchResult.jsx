@@ -13,6 +13,7 @@ const SearchResult = () => {
     const [pageSize, setpageSize] = useState(1);
     const [error, seterror] = useState(null);
     const [Data, setData] = useState(null);
+    const [errorMessage, seterrorMessage] = useState("");
 
     function fetchInitialData() {
         setLoading(true);
@@ -29,19 +30,16 @@ const SearchResult = () => {
     }
 
     function fetchNextPageData() {
-        setLoading(true);
         FetchAPI(`/everything?q=${search}&sortBy=${sort}&pageSize=30&page=${pageSize}&`)
             .then((res) => {
                 if (res?.articles) {
                     setData({ ...Data, articles: [...Data.articles, ...res.articles] });
-                    setLoading(false);
                     setpageSize((prev) => prev + 1)
                 } else {
-                    setData(res)
+                    seterrorMessage("Can't load more Data.")
                 }
             })
             .catch((err) => {
-                setLoading(false);
                 seterror(err);
             });
     }
@@ -66,26 +64,29 @@ const SearchResult = () => {
             </div>
             {Loading && <Spinner initial={true} />}
             {
-                !Loading && <InfiniteScroll
-                    hasMore={() => pageSize <= Math(Data?.totalResults / 30)}
-                    next={() => fetchNextPageData()}
-                    className='content'
-                    dataLength={Data?.articles?.length || []}
-                    loader={<Spinner />}
-                >
-                    <div className="cards h-full w-full flex gap-1 my-6 flex-wrap justify-center">
-                        {
-                            Data?.articles?.length > 0 ?
-                                Data?.articles?.map((i, idx) => (
-                                    <a href={i.url}>
-                                        <Card key={idx} Loading={Loading} title={i.title} src={i.urlToImage} />
-                                    </a>
-                                )) : (
-                                    <h3>Sorry, No Results Found for keyword "{search}"</h3>
-                                )
-                        }
-                    </div>
-                </InfiniteScroll>
+                !Loading &&
+                (
+                    <InfiniteScroll
+                        hasMore={() => pageSize <= Math(Data?.totalResults / 30)}
+                        next={() => fetchNextPageData()}
+                        className='content'
+                        dataLength={Data?.articles?.length || []}
+                        loader={errorMessage !== "" ? <p className='text-center'>{errorMessage}</p> : <Spinner />}
+                    >
+                        <div className="cards h-full w-full flex gap-1 my-6 flex-wrap justify-center">
+                            {
+                                Data?.articles?.length > 0 ?
+                                    Data?.articles?.map((i, idx) => (
+                                        <a href={i.url}>
+                                            <Card key={idx} Loading={Loading} title={i.title} src={i.urlToImage} />
+                                        </a>
+                                    )) : (
+                                        <h3>Sorry, No Results Found for keyword "{search}"</h3>
+                                    )
+                            }
+                        </div>
+                    </InfiniteScroll>
+                )
             }
         </div>
     )
