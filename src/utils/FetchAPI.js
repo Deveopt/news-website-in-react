@@ -4,7 +4,7 @@ const apiKey = import.meta.env.VITE_APP_API_KEY; // Get your own from news api s
 
 export const FetchAPI = async (url) => {
     try {
-        const { data } = await axios.get(`https://newsapi.org/v2${url}apiKey=6b1947fa05a547c6bbe5fa9c21ac9d3d`)
+        const { data } = await axios.get(`https://newsapi.org/v2${url}apiKey=`)
         return data;
     } catch (error) {
         console.log(error);
