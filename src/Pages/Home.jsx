@@ -8,7 +8,7 @@ const Home = () => {
 
     return (
         <>
-            <div className="container min-h-screen mx-auto py-10">
+            <div className="min-h-screen mx-auto py-10">
                 <Hero />
                 <Section query={"cricket"} heading={"Cricket"} />
                 <Section query={"health"} heading={"Health"} />

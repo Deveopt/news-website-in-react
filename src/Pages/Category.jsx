@@ -23,6 +23,7 @@ const Category = () => {
             })
             .catch((err) => {
                 seterror(err);
+                seterrorMessage("Can't load Data! Please Check Your Internet Connection")
                 console.log(err);
             });
     }
@@ -49,7 +50,7 @@ const Category = () => {
 
     return (
         <div className='category w-full min-h-fit my-6'>
-            <div className="topSection flex justify-between w-full px-20 items-center">
+            <div className="topSection flex justify-between w-full px-5 items-center">
                 <h2 className='text-2xl'>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
                 <div className="select">
                     <label htmlFor="sortselect">Sort by  </label>
@@ -60,7 +61,7 @@ const Category = () => {
                     </select>
                 </div>
             </div>
-            {Loading && <Spinner initial={true} />}
+            {Loading && <Spinner initial={false} onFullPage={true} />}
             {
                 !Loading &&
                 (
@@ -69,7 +70,7 @@ const Category = () => {
                         next={() => fetchNextPageData()}
                         className='content'
                         dataLength={Data?.articles?.length || []}
-                        loader={errorMessage !== "" ? <p className='text-center'>{errorMessage}</p> : <Spinner />}
+                        loader={errorMessage !== "" ? <p className='text-center'>{errorMessage}</p> : <Spinner initial={false} onFullPage={false} />}
                     >
                         <div className="cards h-full w-full flex gap-1 my-6 flex-wrap justify-center">
                             {

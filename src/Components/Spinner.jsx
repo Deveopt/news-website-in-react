@@ -2,10 +2,10 @@ import React from 'react'
 
 const Spinner = ({ initial, onFullPage }) => {
     return (
-        <div className="flex items-center justify-center w-full" style={{ height: initial ? "500px" : onFullPage ? "1000px" : "150px" }} >
-            <div className={"border-t-4 border-blue-500 border-solid rounded-full animate-spin h-12 w-12"}></div>
+        <div className="flex items-center justify-center w-full" style={{ height: initial ? "300px" : onFullPage ? "500px" : "100px" }} >
+            <div style={{ border: "8px solid gray", borderTop: "8px solid", borderTopColor: "#06021D" }} className={"  rounded-full animate-spin h-14 w-14"}></div>
         </div>
     )
 }
 
-export default Spinner
+export default Spinner;

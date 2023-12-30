@@ -6,12 +6,12 @@ import Navigation from './Components/Navigation';
 
 const App = () => {
   return (
-    <>
+    <div className='container mx-auto'>
       <Header />
       <Navigation />
       <Outlet />
       <Footer />
-    </>
+    </div>
   )
 }
 

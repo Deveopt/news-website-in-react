@@ -53,7 +53,7 @@ const TopHeadlines = () => {
 
     return (
         <div className='topHeadlines w-full min-h-fit my-6'>
-            <div className="topSection flex justify-between w-full items-center">
+            <div className="topSection px-5 flex justify-between w-full items-center">
                 <h2 className='text-2xl'>Top Headlines</h2>
                 <div className="select">
                     <label htmlFor="sortselect">Sort by  </label>
